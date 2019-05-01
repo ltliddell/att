@@ -1,2 +1,8 @@
 
 \.DS_Store
+
+*.code-workspace
+
+Simulation1/\.nyc_output/
+
+Simulation1/\.vscode/
