@@ -41,11 +41,9 @@ async function main() {
         console.time('TxSubmit');
         await connect();
 
-        //Add 1 record to the ledger
-        await contract.submitTransaction('createEUCVerificationRequest', '333', 'de', '3 grenades to jm');
-
+        //Create an EUC application request
+        await contract.submitTransaction('createEUCVerificationRequest', ['333', 'de', '3 grenades to jm']);
         let response = await contract.evaluateTransaction('readEUCRequest', '333');
-
         console.log(JSON.parse(response.toString()));
 
         await disconnect();
