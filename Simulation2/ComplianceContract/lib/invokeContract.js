@@ -9,7 +9,7 @@ let contract;
 
 async function connect() {
     // Parse the connection profile
-    const ccpPath = path.resolve(__dirname, 'att-documents_ATTSimulation1_profile.json');
+    const ccpPath = path.resolve(__dirname, 'att-documents_ATTComplianceContract_profile.json');
     const connectionProfile = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
     // Configure a wallet
@@ -19,13 +19,13 @@ async function connect() {
     // Create a new gateway, and connect to the gateway peer node(s). The identity
     // specified must already exist in the specified wallet.
     gateway = new Gateway();
-    await gateway.connect(connectionProfile, { wallet, identity: 'za_app_user' , discovery: {enabled: true, asLocalhost:false }});
+    await gateway.connect(connectionProfile, { wallet, identity: 'desupplier_eads' , discovery: {enabled: true, asLocalhost:false }});
 
     // Get the network channel that the smart contract is deployed to.
     const network = await gateway.getNetwork('att-documents');
 
     // Get the smart contract from the network channel.
-    contract = network.getContract('ATTSimulation1');
+    contract = network.getContract('ATTComplianceContract');
 
     console.log('Connected successfully');
 }
@@ -42,9 +42,10 @@ async function main() {
         await connect();
 
         //Add 1 record to the ledger
-        await contract.submitTransaction('createAttReport', '2', 'ZA: 3 Tanks to DE');
+        await contract.submitTransaction('createEUCVerificationRequest', '333', 'de', '3 grenades to jm');
 
-        let response = await contract.evaluateTransaction('readAttReport', '2');
+        let response = await contract.evaluateTransaction('readEUCRequest', '333');
+
         console.log(JSON.parse(response.toString()));
 
         await disconnect();
